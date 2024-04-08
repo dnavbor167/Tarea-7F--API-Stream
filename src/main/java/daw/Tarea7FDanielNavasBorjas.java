@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -53,6 +54,71 @@ public class Tarea7FDanielNavasBorjas {
             escribir(entry.getKey() + "," + entry.getValue(), "contadorGeneros.csv");
 
         }
+        List<Persona> lista = listaObjetoPersona();
+        System.out.println("\nEJERCICIOS 7F\n");
+        
+        System.out.println("\nEjercicio 1\n");
+        System.out.println("Ejercicio 1.1\n");
+        persona1985(lista).forEach(System.out::println);
+        System.out.println("Ejercicio 1.2\n");
+        persona1985Stream(lista).forEach(System.out::println);
+        
+        System.out.println("\nEjercicio 2\n");
+        System.out.println("Ejercicio 2.1\n");
+        correroElectronicos(lista).forEach(System.out::println);
+        System.out.println("Ejercicio 2.2\n");
+        correroElectronicosStream(lista).forEach(System.out::println);
+        
+        System.out.println("\nEjercicio 3\n");
+        System.out.println("Ejercicio 3.1\n");
+        numeroCiudadesDiferentes(lista);
+        System.out.println("Ejercicio 3.2\n");
+        numeroCiudadesDiferentesStream(lista);
+        
+        System.out.println("\nEjercicio 4\n");
+        System.out.println("Ejercicio 4.1\n");
+        System.out.println(seLLamaAlguienZondra(lista));
+        System.out.println("Ejercicio 4.2\n");
+        System.out.println(seLLamaAlguienZondraStream(lista));
+        
+        System.out.println("\nEjercicio 5\n");
+        System.out.println("Ejercicio 5.1\n");
+        System.out.println(viveEstepona(lista));
+        System.out.println("Ejercicio 5.2\n");
+        System.out.println(viveEsteponaStream(lista));
+        
+        System.out.println("\nEjercicio 6\n");
+        System.out.println("Ejercicio 6.1\n");
+        System.out.println(terminacionCia(lista));
+        System.out.println("Ejercicio 6.2\n");
+        System.out.println(terminacionCiaStream(lista));
+        
+        System.out.println("\nEjercicio 7\n");
+        System.out.println("Ejercicio 7.1\n");
+        todasEdades(lista).forEach(System.out::println);
+        System.out.println("Ejercicio 7.2\n");
+        todasEdadesStream(lista).forEach(System.out::println);
+        
+        System.out.println("\nEjercicio 8\n");
+        System.out.println("Ejercicio 8.1\n");
+        System.out.println(sumaTotalEdades(lista));
+        System.out.println("Ejercicio 8.2\n");
+        System.out.println(sumaTotalEdadesStream(lista));
+        
+        System.out.println("\nEjercicio 9\n");
+        System.out.println("Ejercicio 9.1\n");
+        System.out.println(mediaEdad(lista));
+        System.out.println("Ejercicio 9.2\n");
+        System.out.println(mediaEdadStream(lista));
+        
+        System.out.println("\nEjercicio 10\n");
+        System.out.println("Ejercicio 10.1\n");
+        System.out.println(todosNombres(lista));
+        System.out.println("Ejercicio 10.2\n");
+        System.out.println(todosNombresStream(lista));
+        
+       
+        
     }
 
     //método para pasar la lista de String a lista de personas
@@ -156,5 +222,160 @@ public class Tarea7FDanielNavasBorjas {
             }
         }
         return correo;
+    }
+    
+    //Obtener un set de correos electrónicos, ordenados alfabéticamente, 
+    //de aquellas personas cuyo género es "non-binary" y estén jubiladas.
+    //con stream y lambda
+    public static Set<String> correroElectronicosStream(List<Persona> lista) {
+
+        return lista.stream()
+                .filter(p->p.genero().equalsIgnoreCase("non-binary") &&p.jubilado())
+                .sorted((p1,p2)->p1.email().compareTo(p2.email()))
+                .map(p->p.email())
+                .collect(Collectors.toSet());
+    }
+    
+    //Obtener el número de ciudades diferentes.
+    public static void numeroCiudadesDiferentes(List<Persona> lista) {
+        Set<String> setCiudades = new HashSet<>();
+        
+        //vamos recorriendo la lista y vamos añadiendo en el set anteriormente
+        //creado, por lo que si hay algún repetido no lo incluye
+        for (Persona persona : lista) {
+            setCiudades.add(persona.ciudad());
+        }
+        
+        //mostramos el resultado del set
+        System.out.println("El número de ciudades diferentes es " + setCiudades.size());
+    }
+    
+    //Obtener el número de ciudades diferentes.
+    //con stream y lambda
+    public static void numeroCiudadesDiferentesStream(List<Persona> lista) {
+        int numero = (int)lista.stream()
+                .map(p->p.ciudad())
+                .distinct()
+                .count();
+        System.out.println("El número de ciudades diferentes es " + numero);
+    }
+    
+    //Comprobar si alguna persona se llama "Zondra".
+    public static boolean seLLamaAlguienZondra(List<Persona> lista) {
+        for (Persona persona : lista) {
+            if (persona.nombre().equalsIgnoreCase("Zondra")) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    //Comprobar si alguna persona se llama "Zondra".
+    //con stream y lambda
+    public static boolean seLLamaAlguienZondraStream(List<Persona> lista) {
+        return lista.stream()
+                .anyMatch((p)->p.nombre().equalsIgnoreCase("Zondra"));
+    }
+    
+    //Comprobar si ninguna persona vive en "Estepona".
+    public static boolean viveEstepona(List<Persona> lista) {
+        for (Persona persona : lista) {
+            if (persona.ciudad().equalsIgnoreCase("Estepona")) {
+                return false;
+            } 
+        }
+        return true;
+    }
+    
+    //Comprobar si ninguna persona vive en "Estepona".
+    //con stream y lambda
+    public static boolean viveEsteponaStream(List<Persona> lista) {
+        return lista.stream()
+                .noneMatch((p)->p.ciudad().equalsIgnoreCase("estepona"));
+    }
+    
+    //Saber cuantas personas tienen en su apellido la terminación "cía".
+    public static int terminacionCia(List<Persona> lista) {
+        int contador = 0;
+        for (Persona persona : lista) {
+            if (persona.apellido().endsWith("cía")) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+    
+    //Saber cuantas personas tienen en su apellido la terminación "cía".
+    //con stream y lambda
+    public static int terminacionCiaStream(List<Persona> lista) {
+        return (int)lista.stream()
+                .filter((p)->p.apellido().endsWith("cía"))
+                .count();
+    }
+    
+    //Obtener una lista con todas las edades de cada persona.
+    public static List<Integer> todasEdades(List<Persona> lista) {
+        List<Integer> listaFinal = new ArrayList<>();
+        for (Persona persona : lista) {
+            listaFinal.add(persona.edad());
+        }
+        return listaFinal;
+    }
+    
+    //Obtener una lista con todas las edades de cada persona.
+    //con stream y lambda
+    public static List<Integer> todasEdadesStream(List<Persona> lista) {
+        return lista.stream()
+                .map((p)->p.edad())
+                .collect(Collectors.toList());
+    }
+    
+    //Obtener la suma de todas las edades de las personas de la lista.
+    public static int sumaTotalEdades(List<Persona> lista) {
+        int contador = 0;
+        for (Persona persona : lista) {
+            contador += persona.edad();
+        }
+        return contador;
+    }
+    
+    //Obtener la suma de todas las edades de las personas de la lista.
+    //con stream y lambda
+    public static int sumaTotalEdadesStream(List<Persona> lista) {
+         return lista.stream()
+                .mapToInt((p)->p.edad())
+                .sum();
+    }
+    
+    //Obtener la media de edad de las personas de la lista.
+    public static double mediaEdad(List<Persona> lista) {
+        int suma = sumaTotalEdadesStream(lista);
+        return (double)suma / lista.size();
+    }
+    
+    //Obtener la media de edad de las personas de la lista.
+    //con stream y lambda
+    public static double mediaEdadStream(List<Persona> lista) {
+        return lista.stream()
+                .mapToInt((p)->p.edad())
+                .average()
+                .getAsDouble();
+    }
+    
+    //Obtener en un String todos los nombres de las personas concatenados.
+    public static String todosNombres(List<Persona> lista) {
+        StringBuilder sr = new StringBuilder();
+        for (Persona persona : lista) {
+            sr.append(persona.nombre()).append(", ");
+        }
+        return sr.toString();
+    }
+    
+    //Obtener en un String todos los nombres de las personas concatenados.
+    //con stream y lambda
+    public static String todosNombresStream(List<Persona> lista) {
+        return lista.stream()
+                .map((p)->p.nombre())
+                .collect(Collectors.joining(", "));
     }
 }
