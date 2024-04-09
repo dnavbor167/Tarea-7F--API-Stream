@@ -212,7 +212,7 @@ public class Tarea7FDanielNavasBorjas {
     //de aquellas personas cuyo género es "non-binary" y estén jubiladas.
     public static Set<String> correroElectronicos(List<Persona> lista) {
         //creamos el set que vamos  a devolver y le ponemos el ordenado
-        Set<String> correo = new TreeSet<>((p1,p2)->p1.compareToIgnoreCase(p2));
+        Set<String> correo = new TreeSet<>();
         
         //hacemos un for each para ir recorriendo la lista
         for (Persona persona : lista) {
@@ -377,5 +377,10 @@ public class Tarea7FDanielNavasBorjas {
         return lista.stream()
                 .map((p)->p.nombre())
                 .collect(Collectors.joining(", "));
+        
+        //2 opción
+//        return lista.stream()
+//                .map((p)->p.nombre())
+//                .reduce(", ", (a,b)->a.concat(b));
     }
 }
